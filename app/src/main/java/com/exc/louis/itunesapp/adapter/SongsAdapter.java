@@ -14,7 +14,7 @@ import com.exc.louis.itunesapp.gson.SongInformation;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.ItemRowHolder>{
+public class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.ItemRowHolder> {
     private static final String TAG = "SongsAdapter";
     private List<SongInformation> dataList = null;
     private Context mContext;
@@ -40,6 +40,7 @@ public class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.ItemRowHolde
         mh.itemView.setOnClickListener(mh);
         return mh;
     }
+
     @Override
     public void onBindViewHolder(ItemRowHolder itemRowHolder, int i) {
         if (dataList == null || dataList.isEmpty()) return;

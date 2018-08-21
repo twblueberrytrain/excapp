@@ -38,7 +38,7 @@ public class HttpConnector {
                 .addInterceptor(HTTP_LOGGING_INTERCEPTOR)
                 .connectTimeout(1, TimeUnit.MINUTES)
                 .readTimeout(1, TimeUnit.MINUTES)
-                .writeTimeout(1,TimeUnit.MINUTES)
+                .writeTimeout(1, TimeUnit.MINUTES)
                 .build();
         mRetrofit = new Retrofit.Builder()
                 .baseUrl("https://itunes.apple.com/")

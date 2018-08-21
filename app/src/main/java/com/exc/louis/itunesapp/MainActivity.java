@@ -52,12 +52,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         doBind();
-        rvSongList = (RecyclerView) findViewById(R.id.rv_song_list_view);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        songsAdapter = new SongsAdapter(this);
-        rvSongList.setLayoutManager(layoutManager);
-        rvSongList.setAdapter(songsAdapter);
+        findIds();
+        init();
     }
 
     @Override
@@ -76,6 +72,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         doUnBind();
+    }
+
+    private void findIds() {
+        rvSongList = (RecyclerView) findViewById(R.id.rv_song_list_view);
+    }
+
+    private void init() {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        songsAdapter = new SongsAdapter(this);
+        rvSongList.setLayoutManager(layoutManager);
+        rvSongList.setAdapter(songsAdapter);
     }
 
     private void doBind() {
@@ -99,5 +107,4 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
     }
-
 }
