@@ -1,24 +1,33 @@
 package com.exc.louis.itunesapp.service;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.exc.louis.itunesapp.gson.SearchSongList;
 import com.exc.louis.itunesapp.service.iTunesApi.ItunesSearchApi;
+import com.exc.louis.itunesapp.util.EbCoverImage;
 import com.exc.louis.itunesapp.util.EbSongList;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Callback;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static com.exc.louis.itunesapp.util.Constant.EB_RESPONSE_COVER_IMAGE;
 import static com.exc.louis.itunesapp.util.Constant.EB_RESPONSE_SONG_LIST;
 
 public class HttpConnector {
@@ -72,6 +81,38 @@ public class HttpConnector {
                 EbSongList event = new EbSongList(EB_RESPONSE_SONG_LIST);
                 event.setSearchSongList(response.body());
                 EventBus.getDefault().post(event);
+            }
+        });
+    }
+
+    public void getPicture(String pictureUrl) {
+        Request request = new Request.Builder()
+                .url(pictureUrl)
+                .build();
+
+        mOkHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                InputStream inputStream= response.body().byteStream();
+                ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+                byte[] buffer = new byte[1024];
+                byte[] bmp_buffer;
+                int len = 0;
+                while( (len=inputStream.read(buffer)) != -1){
+                    outStream.write(buffer, 0, len);
+                }
+                outStream.close();
+                inputStream.close();
+                bmp_buffer=outStream.toByteArray();
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bmp_buffer, 0, bmp_buffer.length);
+                EbCoverImage ebCoverImage = new EbCoverImage(EB_RESPONSE_COVER_IMAGE);
+                ebCoverImage.setBitmap(bitmap);
+                EventBus.getDefault().post(ebCoverImage);
+            }
+
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+
             }
         });
     }
