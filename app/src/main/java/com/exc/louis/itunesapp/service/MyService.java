@@ -6,6 +6,8 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.exc.louis.itunesapp.util.QuerySetting;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,9 +37,11 @@ public class MyService extends Service {
         return myServiceBinder;
     }
 
-    public void getItunesSongs() {
+    public void getItunesSongs(QuerySetting querySetting) {
         Map<String, String> map = new HashMap<String, String>();
-        map.put("term","jack+johnson");
+        map.put("term", querySetting.getKeyWord());
+        map.put("limit", "200");
+        if (!querySetting.getType().endsWith("all")) map.put("entity", querySetting.getType());
         HttpConnector.getInstance().searchItunes(map);
     }
 }
