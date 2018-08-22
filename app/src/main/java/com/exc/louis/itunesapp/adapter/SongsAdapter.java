@@ -10,7 +10,10 @@ import android.widget.TextView;
 
 import com.exc.louis.itunesapp.R;
 import com.exc.louis.itunesapp.gson.SongInformation;
+import com.exc.louis.itunesapp.util.EbClickCallback;
 import com.squareup.picasso.Picasso;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -67,11 +70,12 @@ public class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.ItemRowHolde
             super(view);
             ivImage100 = (ImageView) view.findViewById(R.id.iv_song_image);
             songName = (TextView) view.findViewById(R.id.txt_song_name);
-            artistName = (TextView) view.findViewById(R.id.txt_artis_name);
+            artistName = (TextView) view.findViewById(R.id.txt_artist_name);
         }
 
         @Override
         public void onClick(View v) {
+            EventBus.getDefault().post(new EbClickCallback(v));
         }
 
     }
