@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 
 import com.exc.louis.itunesapp.adapter.SongsAdapter;
@@ -79,10 +80,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init() {
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         songsAdapter = new SongsAdapter(this);
-        rvSongList.setLayoutManager(layoutManager);
+        rvSongList.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         rvSongList.setAdapter(songsAdapter);
     }
 
