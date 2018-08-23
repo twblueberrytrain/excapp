@@ -2,7 +2,9 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_margin="10dp"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,30 +22,35 @@
             android:id="@+id/txt_detail_song_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:singleLine="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="-1"
             style="@style/MyRowStyle"
+            android:layout_margin="2dp"
             />
         <TextView
             android:id="@+id/txt_detail_artist_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:singleLine="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="-1"
             style="@style/MyRowStyle"
+            android:layout_margin="2dp"
             />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/iv_play_or_stop"
+            android:src="@drawable/icon_prepare_play"
+            android:layout_width="50dp"
             android:layout_height="50dp"
-            android:orientation="horizontal"
-            android:layout_margin="10dp"
-            android:gravity="center"
-            >
-            <ImageView
-                android:id="@+id/iv_play_or_stop"
-                android:src="@drawable/icon_play"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                />
-        </LinearLayout>
+            />
 
     </LinearLayout>
 

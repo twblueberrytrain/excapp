@@ -40,8 +40,8 @@ public class MyService extends Service {
     public void getItunesSongs(QuerySetting querySetting) {
         Map<String, String> map = new HashMap<String, String>();
         map.put("term", querySetting.getKeyWord());
-        map.put("limit", "200");
-        if (!querySetting.getType().endsWith("all")) map.put("entity", querySetting.getType());
+        map.put("limit", "50");
+        map.put("media", "music");
         HttpConnector.getInstance().searchItunes(map);
     }
 }

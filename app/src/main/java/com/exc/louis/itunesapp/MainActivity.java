@@ -173,30 +173,50 @@ public class MainActivity extends Activity {
         TextView detailArtistName = alertDialog.findViewById(R.id.txt_detail_artist_name);
         ImageView ivCoverInDialog = alertDialog.findViewById(R.id.iv_detail_cover);
         ImageView ivPlayOrStop = alertDialog.findViewById(R.id.iv_play_or_stop);
-        detailSongName.setText(songInformation.getTrackName());
-        detailArtistName.setText(songInformation.getArtistName());
-
         ImageView ivCoverInList = view.findViewById(R.id.iv_song_image);
+
+        detailSongName.setSelected(true);
+        detailSongName.setText(songInformation.getTrackName());
+        detailArtistName.setSelected(true);
+        detailArtistName.setText(songInformation.getArtistName());
+        ivPlayOrStop.setEnabled(false);
+
         BitmapDrawable drawable = (BitmapDrawable) ivCoverInList.getDrawable();
         Bitmap cover = drawable.getBitmap();
         ivCoverInDialog.setImageBitmap(cover);
 
+        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mediaPlayer) {
+                ivPlayOrStop.setImageResource(R.drawable.icon_play);
+                ivPlayOrStop.setEnabled(true);
+            }
+        });
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                ivPlayOrStop.setImageResource(R.drawable.icon_play);
+            }
+        });
+
+        try {
+            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            mediaPlayer.setDataSource(songInformation.getPreviewUrl());
+            mediaPlayer.prepareAsync();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         ivPlayOrStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    if (!mediaPlayer.isPlaying()) {
-                        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                        mediaPlayer.setDataSource(songInformation.getPreviewUrl());
-                        mediaPlayer.prepare(); // might take long! (for buffering, etc)
-                        mediaPlayer.start();
-                    } else if (mediaPlayer.isPlaying()){
-                        mediaPlayer.stop();
-                    } else if (mediaPlayer.isLooping()) {
-                        mediaPlayer.stop();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
+                if (!mediaPlayer.isPlaying()) {
+                    mediaPlayer.start();
+                    ivPlayOrStop.setImageResource(R.drawable.icon_pause);
+                } else if (mediaPlayer.isPlaying()) {
+                    mediaPlayer.pause();
+                    mediaPlayer.seekTo(0);
+                    ivPlayOrStop.setImageResource(R.drawable.icon_play);
                 }
             }
         });
