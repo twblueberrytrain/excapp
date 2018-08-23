@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -107,15 +108,23 @@ public class MainActivity extends Activity {
         etKeyWord.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                if (i == EditorInfo.IME_ACTION_DONE) {
-                    theKeyWord = textView.getText().toString();
-                    if (!theKeyWord.isEmpty()) {
-                        showProgressDialog();
-                        sendKeyWordToQuery(theKeyWord);
-                    }
-                    return true;
+                boolean ret = false;
+                switch (i) {
+                    case EditorInfo.IME_ACTION_DONE:
+                    case EditorInfo.IME_ACTION_GO:
+                    case EditorInfo.IME_ACTION_NEXT:
+                        theKeyWord = textView.getText().toString();
+                        if (!theKeyWord.isEmpty()) {
+                            showProgressDialog();
+                            sendKeyWordToQuery(theKeyWord);
+                        }
+                        hideKeyboard(MainActivity.this);
+                        ret = true;
+                        break;
+                    default:
+                        break;
                 }
-                return false;
+                return ret;
             }
         });
     }
@@ -220,6 +229,17 @@ public class MainActivity extends Activity {
                 }
             }
         });
+    }
+
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = activity.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN_ORDERED)
