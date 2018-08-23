@@ -163,7 +163,9 @@ public class MainActivity extends Activity {
         int position = rvSongList.getChildAdapterPosition(view);
         if (position < 0) return;
         final SongInformation songInformation = songsAdapter.getDataList().get(position);
+        final View titleView = getLayoutInflater().inflate(R.layout.dialog_custom_title, null);
         AlertDialog alertDialog = new AlertDialog.Builder(this)
+                .setCustomTitle(titleView)
                 .setView(R.layout.dialog_song_detail)
                 .setPositiveButton("Complete", null)
                 .setCancelable(true)
@@ -178,16 +180,18 @@ public class MainActivity extends Activity {
             }
         });
         alertDialog.show();
-        TextView detailSongName = alertDialog.findViewById(R.id.txt_detail_song_name);
+        TextView tvTitleText = titleView.findViewById(R.id.tv_title);
+        TextView detailCollectionName = alertDialog.findViewById(R.id.txt_detail_collection_name);
         TextView detailArtistName = alertDialog.findViewById(R.id.txt_detail_artist_name);
         ImageView ivCoverInDialog = alertDialog.findViewById(R.id.iv_detail_cover);
         ImageView ivPlayOrStop = alertDialog.findViewById(R.id.iv_play_or_stop);
         ImageView ivCoverInList = view.findViewById(R.id.iv_song_image);
 
-        detailSongName.setSelected(true);
-        detailSongName.setText(songInformation.getTrackName());
+        tvTitleText.setText(songInformation.getTrackName());
         detailArtistName.setSelected(true);
         detailArtistName.setText(songInformation.getArtistName());
+        detailCollectionName.setSelected(true);
+        detailCollectionName.setText(songInformation.getCollectionName());
         ivPlayOrStop.setEnabled(false);
 
         BitmapDrawable drawable = (BitmapDrawable) ivCoverInList.getDrawable();

@@ -8,10 +8,15 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center"
         >
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            style="@style/MyDivider"
+            />
 
         <ImageView
             android:id="@+id/iv_detail_cover"
@@ -19,7 +24,7 @@
             android:layout_height="100dp"
             />
         <TextView
-            android:id="@+id/txt_detail_song_name"
+            android:id="@+id/txt_detail_artist_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="14dp"
@@ -32,7 +37,7 @@
             android:layout_margin="2dp"
             />
         <TextView
-            android:id="@+id/txt_detail_artist_name"
+            android:id="@+id/txt_detail_collection_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="14dp"
