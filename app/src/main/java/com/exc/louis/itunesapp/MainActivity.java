@@ -117,6 +117,9 @@ public class MainActivity extends Activity {
                         if (!theKeyWord.isEmpty()) {
                             showProgressDialog();
                             sendKeyWordToQuery(theKeyWord);
+                        } else {
+                            songsAdapter.setDataList(null);
+                            songsAdapter.notifyDataSetChanged();
                         }
                         hideKeyboard(MainActivity.this);
                         ret = true;
