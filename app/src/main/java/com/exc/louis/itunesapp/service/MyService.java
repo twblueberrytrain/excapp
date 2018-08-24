@@ -8,6 +8,10 @@ import android.util.Log;
 
 import com.exc.louis.itunesapp.util.QuerySetting;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,8 +33,14 @@ public class MyService extends Service {
     public void onCreate() {
         super.onCreate();
         Log.d(TAG, "onCreate");
+        EventBus.getDefault().register(this);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -43,5 +53,10 @@ public class MyService extends Service {
         map.put("limit", "50");
         map.put("media", "music");
         HttpConnector.getInstance().searchItunes(map);
+    }
+
+    @Subscribe(threadMode = ThreadMode.ASYNC)
+    public void onQueryEvent(QuerySetting querySetting) {
+        getItunesSongs(querySetting);
     }
 }

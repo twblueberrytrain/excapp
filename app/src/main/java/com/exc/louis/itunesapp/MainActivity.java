@@ -43,35 +43,16 @@ public class MainActivity extends Activity {
 
     private static final String TAG = "MainActivity";
 
-    private MyService myService;
-    private boolean mBound = false;
     private EditText etKeyWord;
     private RecyclerView rvSongList;
     private SongsAdapter songsAdapter;
     private ProgressDialog progressDialog = null;
     private String theKeyWord = "";
 
-    private ServiceConnection mServiceConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            Log.d(TAG, "onServiceConnected");
-            myService = ((MyService.MyServiceBinder) service).getService();
-            mBound = true;
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            Log.d(TAG, "onServiceDisconnected");
-            myService = null;
-            mBound = false;
-        }
-    };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        doBind();
         findIds();
         init();
     }
@@ -91,7 +72,6 @@ public class MainActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        doUnBind();
     }
 
     private void findIds() {
@@ -132,20 +112,9 @@ public class MainActivity extends Activity {
         });
     }
 
-    private void doBind() {
-        bindService(new Intent(this, MyService.class), mServiceConnection, Context.BIND_AUTO_CREATE);
-    }
-
-    private void doUnBind() {
-        if (mBound) {
-            unbindService(mServiceConnection);
-        }
-    }
-
     private void sendKeyWordToQuery(String keyWord) {
-        if (!mBound) return;
         QuerySetting querySetting = new QuerySetting(keyWord);
-        myService.getItunesSongs(querySetting);
+        EventBus.getDefault().post(querySetting);
     }
 
     private void showProgressDialog() {

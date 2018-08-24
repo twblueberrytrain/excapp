@@ -12,5 +12,7 @@ public class MyApplication extends Application {
     public void onCreate(){
         super.onCreate();
         HttpConnector.getInstance().init(this);
+        Intent intent = new Intent(this, MyService.class);
+        startService(intent);
     }
 }
